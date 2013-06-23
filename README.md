@@ -7,7 +7,8 @@ Because there just aren't enough npm modules for getting config values from your
 ## Usage
 
 ```
-fn(configSpec, envVars);
+var yapec = require('yapec');
+config = yapec(configSpec, process.env);
 ```
 
 _Example_

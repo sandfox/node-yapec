@@ -4,14 +4,36 @@ __Yet Another Parser for Environmental Configuration__
 
 Because there just aren't enough npm modules for getting config values from your enviroment already!
 
+## Installation
+
+Be sane, use `npm`
+
+```bash
+$ npm install yapec
+```
+
+otherwise clone this repo via git
+
+```bash
+$ git clone https://github.com/sandfox/node-yapec.git
+```
+
+
 ## Usage
 
-```
+```javascript
 var yapec = require('yapec');
-config = yapec(configSpec, process.env);
+var config = yapec(configSpec, process.env);
 ```
 
-_Example_
+`yapec` takes a spec in the form of an object (which can be nested to your heart's content) where the leaf of every path must be a string which dictates how to parse the corresponding ENV_VAR string.
+The path itself is converted into UPPERCASE, and dot seperators exchanged for underscores*.
+
+*_yes I realise this is probably not the clearest way to describe what it does but my brain is failing me at this point in time_
+
+_Examples_
+
+Some of these examples can also be found in the examples folder inside this project.
 
 ```javascript
 
@@ -54,7 +76,8 @@ console.log(config)
 
 ```
 
-Optionally a prefix can be supplied which acts as a mask.
+
+Optionally a prefix can be supplied as the first arguement which acts as a mask when looking through the enviroment variables.
 
 _Example_
 
@@ -78,16 +101,26 @@ console.log(config);
 
 ```
 
+## Stability Index
+
+Based up on [node.js stability index](http://nodejs.org/api/documentation.html#documentation_stability_index)
+
+__Stability: 2 - Unstable__
+
 ## Testing
 
-Code is tested with `mocha` + `should`.
-The tests aren't bad, but they could be more complete.
+Code is tested with `mocha` + `should`, just run `npm test` as usual.
+The tests aren't bad, but they could be more complete. There are travis tests too!
+
+## Upgrades, fixes, ideas
+
+All ideas, bug fixes, suggestions etc are gladly excepted so feel free to raise pull requests and issues.
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2013 James Butler <james.butler@sandfox.co.uk>
+Copyright (c) 2013 James Edward Butler AKA sandfox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -1,19 +1,21 @@
 {
   "name": "yapec",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Yet Another Parser for Enviromental Configuration",
   "main": "index.js",
   "scripts": {
     "test": "make test"
   },
   "repository": "  git://github.com/sandfox/node-yapec",
+  "bugs" : "https://github.com/sandfox/node-yapec/issues",
+  "homepage" : "https://github.com/sandfox/node-yapec",
   "keywords": [
     "env",
     "enviroment",
     "config",
     "configuration"
   ],
-  "author": "sandfox",
+  "author": "sandfox <james.butler@sandfox.co.uk>",
   "license": "MIT",
   "devDependencies": {
     "mocha": "1.11.x",

@@ -1,8 +1,10 @@
 var traverse = require('traverse');
 
-module.exports = function(prefix, spec, env, opts) {
+module.exports = yapec;
 
-	if (typeof env === 'undefined' || env === null) {
+function yapec(prefix, spec, env, opts) {
+
+	if (typeof prefix !== 'string') {
 		opts = env;
 		env = spec;
 		spec = prefix;
@@ -18,13 +20,68 @@ module.exports = function(prefix, spec, env, opts) {
 	    	var envVar = prefix ? prefix + envVarBase : envVarBase;
 
 	    	if (env[envVar] === undefined || env[envVar] === null) {
+	    		if(opts.ignoreMissing) {
+	    			this.update(null);
+	    			return;
+	    		}
 	    		throw new Error('No environment variable found for "' + envVar + '"');
 	    	}
 
 	    	this.update(castToType.call(this, node, env[envVar]));
 	    }
 	});
+}
+
+/**
+ * Things we need
+ *
+ * thing to generate ENV_VAR string from config
+ * thing to generate config layout from ENV_VAR
+ * options to allow defaults for non-existent strings
+ */
+
+yapec.getEnvStrings = function(prefix, spec) {
+
+	if (typeof prefix !== 'string') {
+		spec = prefix;
+		prefix = null;
+	}
+
+	return traverse(spec).reduce(function(strings, node) {
+		if (this.isLeaf) {
+	    	var envVarBase = this.path.join('_').toUpperCase();
+	    	var envVar = prefix ? prefix + envVarBase : envVarBase;
+	    	strings.push(envVar);
+		}
+		return strings;
+	}, [])
 };
+
+yapec.getSpec =function(prefix, env) {
+
+	if (typeof prefix !== 'string') {
+		env = prefix;
+		prefix = null;
+	}
+
+	var config = {};
+
+	Object.keys(env).forEach(function(envvar){
+
+		var key = envvar;
+
+		if(prefix && envvar.indexOf(prefix) === 0){
+			envvar = envvar.substring(prefix.length);
+		} else if (prefix && envvar.indexOf(prefix) !== 0){
+			return;
+		}
+
+		var parts = envvar.toLowerCase().split('_');
+		traverse(config).set(parts, env[key]);
+	})
+
+	return config;
+}
 
 function castToType(type, varString) {
 

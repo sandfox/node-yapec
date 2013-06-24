@@ -4,6 +4,10 @@ __Yet Another Parser for Environmental Configuration__
 
 Because there just aren't enough npm modules for getting config values from your enviroment already!
 
+### Travis Status
+
+[![Build Status](https://travis-ci.org/sandfox/node-yapec.png?branch=master)](https://travis-ci.org/sandfox/node-yapec)
+
 ## Installation
 
 Be sane, use `npm`
@@ -23,13 +27,15 @@ $ git clone https://github.com/sandfox/node-yapec.git
 
 ```javascript
 var yapec = require('yapec');
-var config = yapec(configSpec, process.env);
+var config = yapec(['PRE_FIX'], configSpec, process.env, opts);
 ```
 
 `yapec` takes a spec in the form of an object (which can be nested to your heart's content) where the leaf of every path must be a string which dictates how to parse the corresponding ENV_VAR string.
 The path itself is converted into UPPERCASE, and dot seperators exchanged for underscores*.
 
-*_yes I realise this is probably not the clearest way to describe what it does but my brain is failing me at this point in time_
+An optional prefix may be supplied as the first arg which will act as a mask when searching the env object. An optional options object may be supplied, so far the only option is 'ignoreMissing' that accepts a bool, is false by default, and when true rather than throwing an exception if an ENV VAR is missing, instead returns a `null` for that value.
+
+_*yes I realise this is probably not the clearest way to describe what it does but my brain is failing me at this point in time_
 
 _Examples_
 
@@ -100,6 +106,28 @@ console.log(config);
 {fallover:false}
 
 ```
+
+### Caveats
+
+Due to the way this modules works certain combinations of ENV VAR strings are forbidden, for example the following would fail because it could not be resolved into an object in any sane way because `app` could not be both a string and object at the same time.
+
+```bash
+APP="super app"
+APP_DB_NAME="megadb"
+APP_DB_PORT="8000"
+```
+
+### Helpers
+
+`yapec` also comes with helpers for creating configs from `process.env` style objects and for creating ENV VAR strings from a config object. Checkout the examples folder as it should be pretty self explanatory. _todo - document this better_
+
+
+`yapec.getSpec([prefix], process.env)`
+
+and
+
+`yapec.getEnvStrings([prefix], config)`
+
 
 ## Stability Index
 

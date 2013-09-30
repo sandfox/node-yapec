@@ -18,8 +18,8 @@
   "author": "sandfox <james.butler@sandfox.co.uk>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "1.11.x",
-    "should": "1.2.x"
+    "mocha": "1.13.x",
+    "should": "1.3.x"
   },
   "dependencies": {
     "traverse": "0.6.x"

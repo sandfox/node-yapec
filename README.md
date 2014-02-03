@@ -8,6 +8,8 @@ Because there just aren't enough npm modules for getting config values from your
 
 [![Build Status](https://travis-ci.org/sandfox/node-yapec.png?branch=master)](https://travis-ci.org/sandfox/node-yapec)
 
+[![NPM](https://nodei.co/npm/yapec.png?downloads=true)](https://nodei.co/npm/yapec/)
+
 ## Installation
 
 Be sane, use `npm`

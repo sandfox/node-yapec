@@ -23,10 +23,10 @@ describe('yapec', function() {
       should.exist(env);
       env.should.be.instanceOf(Array);
       env.should.have.length(4);
-      env.should.include('CRYPTO');
-      env.should.include('NAME');
-      env.should.include('DB_HOST');
-      env.should.include('DB_PORT');
+      env.should.containEql('CRYPTO');
+      env.should.containEql('NAME');
+      env.should.containEql('DB_HOST');
+      env.should.containEql('DB_PORT');
 
     })
 
@@ -46,10 +46,10 @@ describe('yapec', function() {
       should.exist(env);
       env.should.be.instanceOf(Array);
       env.should.have.length(4);
-      env.should.include('HIPHOP_CRYPTO');
-      env.should.include('HIPHOP_NAME');
-      env.should.include('HIPHOP_DB_HOST');
-      env.should.include('HIPHOP_DB_PORT');
+      env.should.containEql('HIPHOP_CRYPTO');
+      env.should.containEql('HIPHOP_NAME');
+      env.should.containEql('HIPHOP_DB_HOST');
+      env.should.containEql('HIPHOP_DB_PORT');
 
     })
 

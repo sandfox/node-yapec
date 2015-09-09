@@ -15,20 +15,20 @@ function yapec(prefix, spec, env, opts) {
 
 	return traverse(spec).map(function(node) {
 
-	    if (this.isLeaf) {
-	    	var envVarBase = this.path.join('_').toUpperCase();
-	    	var envVar = prefix ? prefix + envVarBase : envVarBase;
+		if (this.isLeaf) {
+			var envVarBase = this.path.join('_').toUpperCase();
+			var envVar = prefix ? prefix + envVarBase : envVarBase;
 
-	    	if (env[envVar] === undefined || env[envVar] === null) {
-	    		if(opts.ignoreMissing) {
-	    			this.update(null);
-	    			return;
-	    		}
-	    		throw new Error('No environment variable found for "' + envVar + '"');
-	    	}
+			if (env[envVar] === undefined || env[envVar] === null) {
+				if(opts.ignoreMissing) {
+					this.update(null);
+					return;
+				}
+				throw new Error('No environment variable found for "' + envVar + '"');
+			}
 
-	    	this.update(castToType.call(this, node, env[envVar]));
-	    }
+			this.update(castToType.call(this, node, env[envVar]));
+		}
 	});
 }
 
@@ -47,14 +47,14 @@ yapec.getEnvStrings = function(prefix, spec) {
 		prefix = null;
 	}
 
-	return traverse(spec).reduce(function(strings, node) {
+	return traverse(spec).reduce(function(strings) {
 		if (this.isLeaf) {
-	    	var envVarBase = this.path.join('_').toUpperCase();
-	    	var envVar = prefix ? prefix + envVarBase : envVarBase;
-	    	strings.push(envVar);
+			var envVarBase = this.path.join('_').toUpperCase();
+			var envVar = prefix ? prefix + envVarBase : envVarBase;
+			strings.push(envVar);
 		}
 		return strings;
-	}, [])
+	}, []);
 };
 
 yapec.getSpec =function(prefix, env) {
@@ -78,12 +78,14 @@ yapec.getSpec =function(prefix, env) {
 
 		var parts = envvar.toLowerCase().split('_');
 		traverse(config).set(parts, env[key]);
-	})
+	});
 
 	return config;
-}
+};
 
 function castToType(type, varString) {
+
+	var retVal;
 
 	if (type === null) {
 		throw new Error('type must not be "null" for key "' + this.path + '" in the spec');
@@ -98,31 +100,32 @@ function castToType(type, varString) {
 	}
 
 	switch (type) {
-		case 'string':
-			retVal = varString;
-			break;
-		case 'int':
-		case 'integer':
-			retVal = parseInt(varString, 10);
-			if (isNaN(retVal)) {
-				throw new Error('Expected string parseable as "int" for "' + this.path + '" but found this "' + varString + '"');
-			}
-			break;
-		case 'float':
-			retVal = parseFloat(varString);
-			if (isNaN(retVal)) {
-				throw new Error('Expected string parseable as "float" for "' + this.path + '" but found this "' + varString + '"');
-			}
-			break;
-		case 'bool':
-			if (varString === 'true' || varString === 'false') {
-				retVal = (varString === 'true');
-			} else {
-				throw new Error('Expected either "true" or "false" for "' + this.path + '" but found "' + varString + '"');
-			}
-			break;
-		default:
-			throw new Error('Unknown type "' + type + '" for "' + this.path + '"');
+	case 'string':
+		retVal = varString;
+		break;
+	case 'int':
+	case 'integer':
+		retVal = parseInt(varString, 10);
+		if (isNaN(retVal)) {
+			throw new Error('Expected string parseable as "int" for "' + this.path + '" but found this "' + varString + '"');
+		}
+		break;
+	case 'float':
+		retVal = parseFloat(varString);
+		if (isNaN(retVal)) {
+			throw new Error('Expected string parseable as "float" for "' + this.path + '" but found this "' + varString + '"');
+		}
+		break;
+	case 'bool':
+	case 'boolean':
+		if (varString === 'true' || varString === 'false') {
+			retVal = (varString === 'true');
+		} else {
+			throw new Error('Expected either "true" or "false" for "' + this.path + '" but found "' + varString + '"');
+		}
+		break;
+	default:
+		throw new Error('Unknown type "' + type + '" for "' + this.path + '"');
 	}
 	return retVal;
 }

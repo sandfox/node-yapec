@@ -4,7 +4,8 @@
   "description": "Yet Another Parser for Enviromental Configuration",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "lint": "eslint index.js"
   },
   "repository": "  git://github.com/sandfox/node-yapec",
   "bugs": "https://github.com/sandfox/node-yapec/issues",
@@ -18,6 +19,7 @@
   "author": "sandfox <james.butler@sandfox.co.uk>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^1.3.1",
     "mocha": "^1.17.1",
     "should": "^3.1.2"
   },
